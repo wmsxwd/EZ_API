@@ -1,0 +1,37 @@
+{
+  "name": "ez-theme-api-middleware",
+  "version": "1.0.0",
+  "description": "EZ THEME API中间件服务",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build:linux-x64": "pkg . --target node18-linux-x64 --output dist/EZ_API_Linux_x64",
+    "build:linux-arm64": "pkg . --target node18-linux-arm64 --output dist/EZ_API_Linux_arm",
+    "build:all-linux": "npm run build:linux-x64 && npm run build:linux-arm64"
+  },
+  "pkg": {
+    "assets": [
+      "**/*",
+      "!node_modules/**/*",
+      "!dist/**/*",
+      "!.git/**/*"
+    ],
+    "outputPath": "dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "lru-cache": "^11.1.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "pkg": "^5.8.1"
+  }
+}

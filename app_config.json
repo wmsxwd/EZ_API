@@ -1,0 +1,10 @@
+{
+  "staticEndpoints": [
+    "test.test.test"
+  ],
+  "webUrl": "https://www.google.com",
+  "socks5ProxyMode":"true",
+  "socks5Proxy": "socks5://127.0.0.1:1080",
+  "isEZTheme": "true",
+  "captcha": "google"
+} 
