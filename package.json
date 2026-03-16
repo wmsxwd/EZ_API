@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build:linux-x64": "pkg . --target node18-linux-x64 --output dist/EZ_API_Linux_x64",
-    "build:linux-arm64": "pkg . --target node18-linux-arm64 --output dist/EZ_API_Linux_arm",
+    "build:linux-arm64": "pkg . --target node18-linux-arm64 --output dist/EZ_API_Linux_arm64",
     "build:all-linux": "npm run build:linux-x64 && npm run build:linux-arm64"
   },
   "pkg": {

@@ -2,9 +2,7 @@ name: Build EZ_API
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
   pull_request:
   workflow_dispatch:
   release:
@@ -25,18 +23,26 @@ jobs:
 
           - name: linux-arm64
             script: build:linux-arm64
-            binary: EZ_API_Linux_arm
+            binary: EZ_API_Linux_arm64
             archive: EZ_API_Linux_arm64.tar.gz
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 18
-          cache: npm
+          package-manager-cache: false
+
+      - name: Show versions
+        run: |
+          node -v
+          npm -v
 
       - name: Install dependencies
         run: npm install
@@ -48,12 +54,14 @@ jobs:
         run: |
           mkdir -p package/${{ matrix.target.name }}
           cp dist/${{ matrix.target.binary }} package/${{ matrix.target.name }}/
+
           [ -f app_config.json ] && cp app_config.json package/${{ matrix.target.name }}/
           [ -f config.js ] && cp config.js package/${{ matrix.target.name }}/
           [ -f index.html ] && cp index.html package/${{ matrix.target.name }}/
           [ -f routes.js ] && cp routes.js package/${{ matrix.target.name }}/
           [ -f server.js ] && cp server.js package/${{ matrix.target.name }}/
           [ -f package.json ] && cp package.json package/${{ matrix.target.name }}/
+
           chmod +x package/${{ matrix.target.name }}/${{ matrix.target.binary }}
           tar -czf package/${{ matrix.target.archive }} -C package/${{ matrix.target.name }} .
 
@@ -62,9 +70,3 @@ jobs:
         with:
           name: ${{ matrix.target.name }}
           path: package/${{ matrix.target.archive }}
-
-      - name: Upload release asset
-        if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: package/${{ matrix.target.archive }}
